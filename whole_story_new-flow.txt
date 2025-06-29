@@ -1,0 +1,139 @@
+There is  a Kubernetes cluster with 4 microservices running sequentially on the nodes. The nodes are connected to each other via switches managed by ONOS controller. there is an objective (intent) from the user. the intent is "application response time". this intent has to be always between a minimum threshold and a maximum threshold. Now the intent is violated since it is greater than the maximum threshold.
+minimum threshold and maximum threshold will be defined for you. All the details about the system along with the monitoring data before and during the violation will be provided for analysis. And, you need to find the root cause of the violation as well as the actions that can be taken to solve the issue.
+FORCED_TEMPLATE:
+{
+    "Source of Violation": {
+        "Reason": [
+            {
+                "description": "high_cpu_utilization_on_nodes",
+                "details": {
+                    "nodes": [""]
+                }
+            },
+            {
+                "description": "high_cpu_utilization_on_pods",
+                "details": {
+                    "pods": [""]
+                }
+            },
+            {
+                "description": "high_mem_utilization_on_nodes",
+                "details": {
+                    "nodes": [""]
+                }
+            },
+            {
+                "description": "high_mem_utilization_on_pods",
+                "details": {
+                    "pods": [""]
+                }
+            },
+            {
+                "description": "traffic_congestion_on_switches",
+                "details": {
+                    "switch": [""]
+                }
+            },
+            {
+                "description": "Unknown_Reason",
+                "details": {
+                    "description": ""
+                }
+            }
+        ]
+    },
+    "Recommended Action": {
+        "pods": [
+            {
+                "name": "",
+                "current_cpu_limit": "",
+                "new_cpu_limit": "",
+                "current_memory_limit": "",
+                "new_memory_limit": "",
+                "current_replicas": "",
+                "new_replicas": ""
+            }
+            // Add more pods as needed.
+        ],
+        "current_placement": [
+            {"pod": "", "node": ""}
+        ],
+        "new_placement": [
+            {"pod": "", "node": ""}
+        ],
+        "new_traffic_path": {
+            "send_path": [
+                {
+                    "src_node": "", // use the first node in the traffic path as requested
+                    "dst_node": "", // use the last node in the traffic path as requested
+                    "path": [
+                        {
+                            "src_node": "",
+                            "src_node_mac_addr": "",
+                            "switch": ""
+                        },
+                        {
+                            "first_switch": ""
+                        },
+                        {
+                            "second_switch": ""
+                        },
+                        {
+                            "third_switch": ""
+                        },
+                        {
+                            "fourth_switch": ""
+                        },
+
+                        // Add switches here and all nodes in between to reach the destination
+
+                        {
+                            "last_switch": ""
+                        },
+                        {
+                            "dst_node": "",
+                            "dst_node_mac_addr": ""
+                        }
+                    ]
+                }
+            ],
+            "reverse_path": [
+                {
+                    "src_node": "",
+                    "dst_node": "",
+                    "path": [
+                        {
+                            "src_node": "",
+                            "src_node_mac_addr": "",
+                            "switch": ""
+                        },
+                        {
+                            "first_switch": ""
+                        },
+                        {
+                            "second_switch": ""
+                        },
+                        {
+                            "third_switch": ""
+                        },
+                        {
+                            "fourth_switch": ""
+                        },
+
+                        // Add switches here and all nodes in between to reach the destination
+
+
+                        {
+                            "last_switch": ""
+                        },
+                        {
+                            "dst_node": "",
+                            "dst_node_mac_addr": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
+

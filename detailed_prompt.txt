@@ -1,0 +1,72 @@
+{
+    "Source of Violation": {
+        "Reason": [
+            {
+                "description": "high_cpu_utilization_on_nodes",
+                "details": {
+                    "nodes": [""]  // Please specify the exact node names in this section.
+                }
+            },
+            {
+                "description": "high_cpu_utilization_on_pods",
+                "details": {
+                    "pods": [""]  // Please specify the exact pod names in this section. ignore db-deployment
+                }
+            },
+            {
+                "description": "high_mem_utilization_on_nodes",
+                "details": {
+                    "nodes": [""]  // Please specify the exact node names in this section.
+                }
+            },
+            {
+                "description": "high_mem_utilization_on_pods",
+                "details": {
+                    "pods": [""]  // Please specify the exact pod names in this section.ignore db-deployment
+                }
+            },
+            {
+                "description": "traffic_congestion_on_switches",
+                "details": {
+                    "switch": [""]  // Please specify the exact switch names with the corresponding interface in this section. Example of usage: s1-eth1
+                }
+            },
+            {
+                "description": "Unknown_Reason",
+                "details": {
+                    "description": "Description of the unknown reason or issue"
+                }
+            }
+        ]
+    },
+    "Recommended Action": {
+        "pods": [
+            {
+                "name": "",  // Specify the pod names here, ignoring db-deployment, or switch interface that needs modification. nodes are not required here.
+                "current_cpu_limit": "current_cpu_value",  // If the issue is related to low allocated CPU on pods, specify the current CPU limit. Otherwise, ignore.
+                "new_cpu_limit": "new_cpu_value",  // If the issue is related to low allocated CPU on pods, increase the cpu limit of the pod by considering the total available cpu of the node. Otherwise, ignore. do not increase the amount of CPU sharply, always consider the required amount to be optimize and to not waste resources.also, make sure the amount is enough to address the violation.The maximum number is 1200.if you reach the limit, try another approach
+                "current_memory_limit": "current_memory_value",  // If the issue is related to low allocated memory on pods, specify the current memory limit. Otherwise, ignore.
+                "new_memory_limit": "new_memory_value",  // If the issue is related to low allocated memory on pods, specify the new recommended memory limit by considering the total available mem of the node. Otherwise, ignore. Just add +100 units to be optimize if necessary. The maximum number is 1200.if you reach the limit, try another approach
+                "current_replicas": "current_replicas_count",  // If the issue is related to a lack of replicas, specify the current number.
+                "new_replicas": "new_replicas_count"  // If the issue is related to a lack of replicas, increase them and Specify the new recommended number of replicas.also, make sure the amount is enough to address the violation.
+            }
+            // Add more pods as needed.
+        ],
+        "current_placement": [
+            {"pod": "pod_name", "node": "node_name"}  // If the issue is related to the current placement of pods, specify the current placements. Otherwise, ignore.
+        ],
+        "new_placement": [
+            {"pod": "pod_name", "node": "node_name"}  // If the issue is related to the placement of pods, specify the new recommended placements. Otherwise, ignore.
+        ],
+        "current_Traffic_Path": "current_Traffic_path",  // If the issue is related to traffic congestion on the switches, specify the exact switch names with the corresponding interface. Example of usage: s1-eth1. Otherwise, ignore.
+
+    }
+    // Additional actions can be added as needed.
+}
+do not include "db-deployment" in the answer. try to provide optimize answer with the minimal changes and provide the most relevant actions.No explanation is needed, the reply should have the template only.
+do not replace microservice1 to other nodes however you can use other actions for this pod.
+if you see there is a "null" option for the placement of the pod, it means the selected node does not have sufficient resources to run another pod. So,try another approach.
+Do not consider "Container host-sflow-sidecar" in the response anymore.
+You need to strictly ensure that the recommendation you provide 100% can addresses the violation and also it avoids violating the minimum threshold. make sure to recommend the most appropriate action to solve the issue.
+When you find the source of violation, give me the recommended actions based on that.
+Do not focus on microservice4 very much. focus more on microservice1 and microservice3 which are the heavier ones.

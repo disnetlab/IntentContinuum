@@ -1,0 +1,55 @@
+{
+    "Source of Violation": {
+        "Reason": [
+
+            {
+                "description": "low_cpu_utilization_on_pods",
+                "details": {
+                    "pods": [""]  // Please specify the exact pod names in this section. ignore db-deployment
+                }
+            },
+
+            {
+                "description": "low_mem_utilization_on_pods",
+                "details": {
+                    "pods": [""]  // Please specify the exact pod names in this section.ignore db-deployment
+                }
+            },
+            {
+                "description": "low_traffic_on_switches",
+                "details": {
+                    "switch": [""]  // Please specify the exact switch names with the corresponding interface in this section. Example of usage: s1-eth1
+                }
+            },
+            {
+                "description": "Unknown_Reason",
+                "details": {
+                    "description": "Description of the unknown reason or issue"
+                }
+            }
+        ]
+    },
+    "Recommended Action": {
+        "pods": [
+            {
+                "name": "",  // Specify the pod names here, ignoring db-deployment, or switch interface that needs modification. nodes are not required here.
+                "current_cpu_limit": "current_cpu_value",  // If the issue is related to the high CPU utilization on pods, specify the current CPU limit. Otherwise, ignore.
+                "new_cpu_limit": "new_cpu_value",  // If the CPU utilization on pods is high it means that the amount of cpu for the pod is more than what it is needed so you need to decrease the cpu limit.You can use a range of 100 to 1200.try to be optimize. also, make sure the amount is enough to address the violation.Consider that the new recommendation for cpu limit of pods cannot be lower than 100 units.if you reach the limit, try another approach
+                "current_memory_limit": "current_memory_value",  // If the issue is related to very low memory utilization on pods, specify the current memory limit. Otherwise, ignore.
+                "new_memory_limit": "new_memory_value",  // If the mem utilization on pods is very low it means that the amount of memory for the pod is more than what it is needed so you need to decrease the memory limit.You can use a range of 100 to 1200. try to be optimize.Consider that the new recommendation for mem limit of pods cannot be lower than 100 units. if you reach the limit, try another approach
+                "current_replicas": "current_replicas_count",  // If the issue is related to the high number of replicas, specify the current number.
+                "new_replicas": "new_replicas_count"  // If the issue is related to the high number of replicas, decrease the number of replicas. also, make sure the amount is enough to address the violation.consider that the number of replicas cannot be lower than 1.
+            }
+            // add more pods as needed.
+        ]
+
+
+    }
+    // Additional actions can be added as needed.
+}
+do not include "db-deployment" in the answer. try to provide optimized answer with the minimal changes and provide the most relevant action.No explanation is needed, the reply should have the template only.
+if you see there is a "null" option for the placement of the pod, it means the selected node does not have sufficient resources to run another pod. So,try another approach.
+Do not consider "Container host-sflow-sidecar" in the response anymore.
+You need to ensure that the recommendation you provide not only addresses the issue but also avoids violating the maximum threshold. make sure to recommend the most appropriate action to solve the issue.
+Do not focus on microservice4 very muc. focus more on microservice1 and microservice3 which are the heavier ones.
+Not only you need to make sure this violation is addressed but also Make sure that addressing this is not causing a violation to the max threshold.

@@ -1,0 +1,134 @@
+{
+    "Source of Violation": {
+        "Reason": [
+            {
+                "description": "high_cpu_utilization_on_nodes",
+                "details": {
+                    "nodes": [""]  // Please specify the exact node names in this section.
+                }
+            },
+            {
+                "description": "high_cpu_utilization_on_pods",
+                "details": {
+                    "pods": [""]  // Please specify the exact pod names in this section. ignore db-deployment
+                }
+            },
+            {
+                "description": "high_mem_utilization_on_nodes",
+                "details": {
+                    "nodes": [""]  // Please specify the exact node names in this section.
+                }
+            },
+            {
+                "description": "high_mem_utilization_on_pods",
+                "details": {
+                    "pods": [""]  // Please specify the exact pod names in this section.ignore db-deployment
+                }
+            },
+            {
+                "description": "traffic_congestion_on_switches",
+                "details": {
+                    "switch": [""]  // Please specify the exact switch names with the corresponding interface in this section. Example of usage: s1-eth1
+                }
+            },
+            {
+                "description": "Unknown_Reason",
+                "details": {
+                    "description": "Description of the unknown reason or issue"
+                }
+            }
+        ]
+    },
+    "Recommended Action": {
+        "pods": [
+            {
+                "name": "",  // Specify the pod names here, ignoring db-deployment, or switch interface that needs modification. nodes are not required here.
+                "current_cpu_limit": "current_cpu_value",  // If the issue is related to high CPU utilization on pods, specify the current CPU limit. Otherwise, ignore.
+                "new_cpu_limit": "new_cpu_value",  // If the issue is related to high CPU utilization on pods, specify the new recommended CPU limit by considering the total available cpu of the node. Otherwise, ignore. Just add +100 units to be optimize if necessary. The maximum number is 1200.if you reach the limit, try another approach
+                "current_memory_limit": "current_memory_value",  // If the issue is related to high memory utilization on pods, specify the current memory limit. Otherwise, ignore.
+                "new_memory_limit": "new_memory_value",  // If the issue is related to high memory utilization on pods, specify the new recommended memory limit by considering the total available mem of the node. Otherwise, ignore. Just add +100 units to be optimize if necessary. The maximum number is 1200.if you reach the limit, try another approach
+                "current_replicas": "current_replicas_count",  // If the issue is related to a lack of replicas, specify the current number.
+                "new_replicas": "new_replicas_count"  // increase the number of replicas and specify the new recommended number of replicas
+            }
+            // Add more pods as needed.
+        ],
+        "current_placement": [
+            {"pod": "pod_name", "node": "node_name"}  // If the issue is related to the current placement of pods, specify the current placements. Otherwise, ignore.
+        ],
+        "new_placement": [
+            {"pod": "pod_name", "node": "node_name"}  // If the issue is related to the placement of pods, specify the new recommended placements. Otherwise, ignore.
+        ],
+        "new_traffic_path": {
+            "send_path": [
+                {
+                    "src_node": "", // use the first node in the traffic path as requested
+                    "dst_node": "", // use the last node in the traffic path as requested
+                    "path": [
+                        {
+                            "src_node": "", //the node hosting microservice1
+                            "src_node_mac_addr": "", // the mac address the node hosting microservice1
+                            "first_switch": "" // // The ID of the switch directly connected to the source node
+                        },
+                        {
+                            "second_switch": "" // The ID of the switch directly connected to `first_switch` and closest to the destination node. Ensure this switch is part of the shortest physical path.make sure to select the correct switch to be in line with the traffic path
+                        },
+                        {
+                            "third_switch": "" // The ID of the switch directly connected to `second_switch` and closest to the destination node. Ensure this switch is part of the shortest physical path.make sure to select the correct switch to be in line with the traffic path
+                         },
+                         {
+                            "fourth_switch": "" // The ID of the switch directly connected to `fourth_switch` and closest to the destination node. Ensure this switch is part of the shortest physical path.make sure to select the correct switch to be in line with the traffic path
+                         },
+                         // Add more switches as needed, always ensuring they follow the shortest path to the destination.
+
+                        {
+                            "last_switch": "" //use switch Id of the direct switch connected to the the node hosts microservice4
+                        },
+                        {
+                            "dst_node": "",//the node hosting microservice4
+                            "dst_node_mac_addr": "" // the mac address of the node hosting microservice4
+                        }
+                    ]
+                }
+            ],
+            "reverse_path": [
+                {
+                    "src_node": "", //the node hosts microservice4
+                    "dst_node": "", //the node hosts microservice1
+                    "path": [
+                        {
+                            "src_node": "", //the node hosts microservice4
+                            "src_node_mac_addr": "", // mac address of the node hosts microservice4
+                            "first_switch": "" // use switch Id of the direct switch connected to the node hosts microservice1
+                        },
+                        {
+                            "second_switch": "" //use switch Id of the direct switch connected to the first_switch and can have the shortest path to the dst.make sure to select the correct switch to be in line with the traffic path
+                        },
+                        {
+                            "third_switch": "" //use switch Id of the direct switch connected to the second_switch and can have the shortest path to the dst.make sure to select the correct switch to be in line with the traffic path
+                        },
+                        // Add more switches as needed until you reach the actual_dst_node
+
+                        {
+                            "last_switch": "" //use switch Id of the direct switch connected to the node hosts microservice1
+                        },
+                        {
+                            "dst_node": "",//the node hosts microservice1
+                            "dst_node_mac_addr": "" // mac address of the node hosts microservice1
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+    // Additional actions can be added as needed.
+}
+
+
+
+do not include "db-deployment" in the answer. try to provide optimize answer with the minimal changes and provide the most relevant actions.No explanation is needed, the reply should have the template only.
+do not replace microservice1 to other nodes however you can use other actions for this pod.
+if you see there is a "null" option for the placement of the pod, it means the selected node does not have sufficient resources to run another pod. So,try another approach.
+Do not consider "Container host-sflow-sidecar" in the response anymore.
+You need to ensure that the recommendation you provide not only addresses the issue but also avoids violating the minimum threshold. make sure to recommend the most appropriate action to solve the issue.
+Do not focus on microservice4 very much. focus more on microservice1 and microservice3 which are the heavier ones.
+To ensure an accurate recommendation for the traffic path, the current physical links (switch-to-switch) and virtual links (pod-to-pod via nodes and switches) must be fully considered. if there is a new traffic path you need to recommend the new entire path for the traffic.

@@ -1,0 +1,58 @@
+There is  a Kubernetes cluster with 4 microservices running on the nodes. The nodes are connected to each other via switches managed by SDN controller. there is an objective (intent) from the user. the intent is "application response time". this intent has to be always between a minimum threshold and a maximum threshold. Now the intent is violated since it is greater than the maximum threshold.
+minimum threshold and maximum threshold will be defined for you. All the details about the system along with the monitoring data before and during the issue will be provided for analysis. And, you need to find the root cause of the issue as well as the actions that can be taken to solve the issue.
+FORCED_TEMPLATE:
+{
+    "Source of Violation": {
+        "Reason": [
+
+            {
+                "description": "low_cpu_utilization_on_pods",
+                "details": {
+                    "pods": [""]
+                }
+            },
+
+            {
+                "description": "low_mem_utilization_on_pods",
+                "details": {
+                    "pods": [""]
+                }
+            },
+            {
+                "description": "low_traffic_on_switches",
+                "details": {
+                    "switch": [""]
+                }
+            },
+            {
+                "description": "traffic_congestion_on_switches",
+                "details": {
+                    "switch": [""]
+                }
+            },
+            {
+                "description": "Unknown_Reason",
+                "details": {
+                    "description": ""
+                }
+            }
+        ]
+    },
+    "Recommended Action": {
+        "pods": [
+            {
+                "name": "",
+                "current_cpu_limit": "",
+                "new_cpu_limit": "",
+                "current_memory_limit": "",
+                "new_memory_limit": "",
+                "current_replicas": "",
+                "new_replicas": ""
+            }
+            // remove pods as needed.
+        ]
+    }
+}
+
+
+
